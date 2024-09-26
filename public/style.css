@@ -1,0 +1,96 @@
+@font-face {
+  font-family: 'OldEnglishFive';
+  src: url('OldEnglishFive.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body { 
+  margin: 0; 
+  overflow: hidden;
+  font-family: sans-serif;
+}
+#mindar-container { 
+  width: 100%;
+  height: 100%;
+  position: absolute; 
+  top: 0;
+  left: 0;
+  z-index: 1; 
+}
+#credits {
+  position: absolute;
+  bottom: 10px;
+  right: 0;
+  text-align: left;
+  z-index: 100;
+  color: white;
+  padding: 10px 0;
+  font-size: .8em;
+  letter-spacing: .03em;
+}
+#attribution { 
+  float: right;
+  padding: 5px 20px 5px 10px;
+  color: white;
+  font-size: 12px;
+  letter-spacing: .03em;
+  border-bottom-left-radius: 4px;
+  border-top-left-radius: 4px;
+  background: black;
+}
+#attribution::before {
+  content: '✨ ';
+}
+#attribution a {
+  color: aqua;
+  text-decoration: none;
+  cursor: pointer;
+}
+#attribution a:hover {
+  color: lime;
+}
+#attribution span {
+  cursor: pointer;
+}
+#site-credits {
+  display: none;
+  margin-top: 10px;
+  padding-left: 20px;
+}
+#site-credits li {
+  margin-bottom: 5px;
+}
+.gg-chevron-down-o {
+  box-sizing: border-box;
+  position: relative;
+  display: inline-block;
+  transform: scale(var(--ggs, .75));
+  width: 22px;
+  height: 22px;
+  border: 2px solid;
+  border-radius: 100px;
+  vertical-align: middle;
+}
+.gg-chevron-down-o::after {
+  content: "";
+  display: block;
+  box-sizing: border-box;
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-bottom: 2px solid;
+  border-right: 2px solid;
+  transform: rotate(45deg);
+  left: 6px;
+  top: 5px;
+}
+#logo {
+  font-family: 'OldEnglishFive', sans-serif;
+  font-size: 28px;
+  padding: 0 20px 5px 0;
+}
+#logo a {
+  color: white;
+  text-decoration: none;
+}
