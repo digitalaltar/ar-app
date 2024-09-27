@@ -1,0 +1,67 @@
+{
+  "basePath": "./experiences/",
+  "targetsFile": "targets.mind",
+  "thumbsFile": "thumbnail.png",
+  "experiences": [
+    {
+      "name": "Vaporwave Experience",
+      "folder": "vaporwave",
+      "images": [
+        {
+          "targetIndex": 0,
+          "video": "astronaut.mp4",
+          "properties": {
+            "width": 1024,
+            "height": 1024,
+            "opacity": 0.5,
+            "rgbShiftIntensity": 0,
+            "glowIntensity": 2,
+            "glitchAmount": 0
+          }
+        },
+        {
+          "targetIndex": 1,
+          "video": "cartoons.mp4",
+          "properties": {
+            "width": 1024,
+            "height": 1024,
+            "opacity": 0.5,
+            "rgbShiftIntensity": 0,
+            "glowIntensity": 2,
+            "glitchAmount": 0
+          }
+        }
+      ]
+    },
+    {
+      "name": "Personas Experience",
+      "folder": "personas",
+      "images": [
+        {
+          "targetIndex": 0,
+          "video": "aquila.mp4",
+          "properties": {
+            "width": 1024,
+            "height": 1024,
+            "opacity": 0.5,
+            "rgbShiftIntensity": 0,
+            "glowIntensity": 2,
+            "glitchAmount": 0
+          }
+        },
+        {
+          "targetIndex": 1,
+          "video": "dianthus.mp4",
+          "properties": {
+            "width": 1024,
+            "height": 1024,
+            "opacity": 0.5,
+            "rgbShiftIntensity": 0,
+            "glowIntensity": 2,
+            "glitchAmount": 0
+          }
+        }
+      ]
+    }
+  ]
+}

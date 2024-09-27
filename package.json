@@ -4,7 +4,6 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
-    "@tensorflow/tfjs": "^4.21.0",
     "mind-ar": "^1.2.5",
     "three": "^0.160.0"
   },
