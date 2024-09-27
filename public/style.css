@@ -18,6 +18,15 @@ body {
   left: 0;
   z-index: 1; 
 }
+#experience-menu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+}
+.thumbnail {
+  max-width: 200px;
+}
 #credits {
   position: absolute;
   bottom: 10px;
