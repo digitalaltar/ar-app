@@ -1,6 +1,7 @@
 // Import necessary libraries
 import * as THREE from 'three';
 import { MindARThree } from 'mind-ar/dist/mindar-image-three.prod.js';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'; // Import GLTFLoader for loading .glb files
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
@@ -10,7 +11,7 @@ let mindARInstance = null;
 let experiences = [];
 let experienceConfig;
 let lastExperience = null; // Track the last experience to prevent reloading
-let chromaticAberrationPass, glowPass, composer;
+let glowPass, composer;
 
 // Wait for the DOM to be fully loaded
 window.addEventListener('DOMContentLoaded', async () => {
@@ -129,23 +130,20 @@ async function loadARExperience(experience) {
         composer = new EffectComposer(renderer);
         
         // Reinitialize shader passes to prevent reusing old ones
-        chromaticAberrationPass = new ShaderPass(ChromaticAberrationShader);
         glowPass = new ShaderPass(GlowShader);
 
         // Add render and shader passes
         composer.passes = [];  // Clear any previous passes
         composer.addPass(new RenderPass(scene, camera));
-        composer.addPass(chromaticAberrationPass);
         composer.addPass(glowPass);
 
-        // Set up target detection and video planes
+        // Set up target detection and media handling (GLB and video) for each image
         setupTargetDetection(experience.images, experience.folder);
 
         // Animation loop for rendering and shader updates
         const clock = new THREE.Clock();
         const animate = () => {
             const elapsedTime = clock.getElapsedTime();
-            chromaticAberrationPass.uniforms['time'].value = elapsedTime; // Update time uniform for effects
             composer.render(); // Render using the composer
             requestAnimationFrame(animate); // Loop the animation
         };
@@ -156,60 +154,32 @@ async function loadARExperience(experience) {
     }
 }
 
-// Custom Chromatic Aberration Shader
-const ChromaticAberrationShader = {
-  uniforms: {
-    tDiffuse: { value: null },
-    amount: { value: 0.0 }, 
-    glitchAmount: { value: 0.0 }, 
-    time: { value: 0.0 }
-  },
-  vertexShader: `
-    varying vec2 vUv;
-    void main() {
-      vUv = uv;
-      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-    }
-  `,
-  fragmentShader: `
-    uniform sampler2D tDiffuse;
-    uniform float amount;
-    uniform float glitchAmount;
-    uniform float time;
-    varying vec2 vUv;
+// Function to load a GLB model for each image
+// Function to load a GLB model for each image and apply transformations
+function loadGLBModel(url, anchor, transform) {
+    const loader = new GLTFLoader();
+    loader.load(url, (gltf) => {
+        const model = gltf.scene;
 
-    float random(vec2 co) {
-      return fract(sin(dot(co.xy, vec2(12.9898, 78.233))) * 43758.5453);
-    }
-
-    void main() {
-      vec2 uv = vUv;
-
-      // Only apply glitch effect if glitchAmount > 0.0
-      if (glitchAmount > 0.0) {
-        float blockSize = 0.05; // Size of glitch blocks
-        vec2 blockCoords = floor(uv / blockSize) * blockSize; 
-
-        // Random glitch effect based on time
-        if (random(blockCoords + time) < glitchAmount) {
-          vec2 glitchMovement = vec2(sin(time * 5.0), cos(time * 3.0)) * blockSize * 0.5;
-          uv += glitchMovement;
+        // Apply position, rotation, and scale from the transform object
+        if (transform) {
+            if (transform.position) {
+                model.position.set(transform.position.x, transform.position.y, transform.position.z);
+            }
+            if (transform.rotation) {
+                model.rotation.set(THREE.MathUtils.degToRad(transform.rotation.x), THREE.MathUtils.degToRad(transform.rotation.y), THREE.MathUtils.degToRad(transform.rotation.z));
+            }
+            if (transform.scale) {
+                model.scale.set(transform.scale.x, transform.scale.y, transform.scale.z);
+            }
         }
-      }
 
-      // Apply chromatic aberration effect
-      vec2 redOffset = amount * vec2(sin(time * 2.0), cos(time * 2.0));
-      vec2 greenOffset = amount * vec2(sin(time + 2.0), cos(time + 2.0));
-      vec2 blueOffset = amount * vec2(sin(time + 4.0), cos(time + 4.0));
+        anchor.group.add(model);  // Add the transformed model to the anchor group
+    }, undefined, (error) => {
+        console.error('An error occurred while loading the GLB model:', error);
+    });
+}
 
-      vec4 cr = texture2D(tDiffuse, uv + redOffset);
-      vec4 cg = texture2D(tDiffuse, uv);
-      vec4 cb = texture2D(tDiffuse, uv - blueOffset);
-
-      gl_FragColor = vec4(cr.r, cg.g, cb.b, cg.a);
-    }
-  `
-};
 
 // Custom Glow Shader
 const GlowShader = {
@@ -240,61 +210,55 @@ const GlowShader = {
 };
 
 // Function to set up target detection and media handling
-function setupTargetDetection(mediaData, experienceFolder){
-    mediaData.forEach((entry, index) => {
-        const properties = entry.properties; 
-        if (!properties) {
-            console.error(`Properties are undefined for image entry at index ${index}`, entry);
-            return; 
+function setupTargetDetection(mediaData, experienceFolder) {
+    mediaData.forEach((entry) => {
+        const { targetIndex, properties } = entry;
+        if (properties === undefined) {
+            console.error(`Properties are missing for image with target index ${targetIndex}`);
+            return;
         }
 
-        const anchor = mindARInstance.addAnchor(index);
-        const videoSrc = `${experienceConfig.basePath}${experienceFolder}/${entry.video}`; 
+        // Create an anchor for each image using its target index
+        const anchor = mindARInstance.addAnchor(targetIndex);
 
+        // Load the GLB model only if defined, and pass the transform object
+        if (entry.glbModel) {
+            const glbModelPath = `${experienceConfig.basePath}${experienceFolder}/${entry.glbModel}`;
+            loadGLBModel(glbModelPath, anchor, entry.transform);  // Pass the transform from JSON
+        }
+
+        const videoSrc = `${experienceConfig.basePath}${experienceFolder}/${entry.video}`;
         const { width, height, opacity } = properties;
 
         if (width === undefined || height === undefined || opacity === undefined) {
-            console.error(`Missing properties for media entry at index ${index}:`, entry);
-            return; 
+            console.error(`Missing properties for media entry with target index ${targetIndex}`);
+            return;
         }
 
         const { plane, video } = createVideoPlane(videoSrc, width, height, opacity);
-        anchor.group.add(plane); 
+        anchor.group.add(plane);  // Add the video plane to the anchor group
 
         anchor.onTargetFound = () => {
-            video.play(); 
-            applyEffects(properties); 
+            video.play();  // Start video playback when the target is detected
+            applyEffects(properties);  // Apply glow shader effects
         };
 
         anchor.onTargetLost = () => {
-            video.pause(); 
-            resetEffects(); // Reset shaders when the target is lost
+            video.pause();  // Pause video when the target is lost
+            resetEffects();  // Reset shader effects
         };
     });
 }
 
 // Function to apply effects based on entry properties
 function applyEffects(properties) {
-    const rgbShiftIntensity = properties.rgbShiftIntensity || 0;
     const glowIntensity = properties.glowIntensity || 0;
-    const glitchAmount = properties.glitchAmount || 0;
-
-    chromaticAberrationPass.uniforms['amount'].value = rgbShiftIntensity;
     glowPass.uniforms['glowIntensity'].value = glowIntensity;
-
-    // Apply glitch only if glitchAmount is greater than 0
-    if (glitchAmount > 0) {
-        chromaticAberrationPass.uniforms['glitchAmount'].value = glitchAmount;
-    } else {
-        chromaticAberrationPass.uniforms['glitchAmount'].value = 0;
-    }
 }
 
 // Function to reset shader effects
 function resetEffects() {
-    chromaticAberrationPass.uniforms['amount'].value = 0;
     glowPass.uniforms['glowIntensity'].value = 0;
-    chromaticAberrationPass.uniforms['glitchAmount'].value = 0;
 }
 
 // Function to create a video plane
@@ -326,4 +290,4 @@ function createVideoPlane(videoSrc, videoWidth, videoHeight, opacity) {
     return { plane: new THREE.Mesh(geometry, material), video };
 }
 
-console.log('version check: 0.0.3');
+console.log('version check: 0.0.3e');

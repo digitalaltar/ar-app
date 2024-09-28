@@ -14,22 +14,26 @@
             "width": 1024,
             "height": 1024,
             "opacity": 0.5,
-            "rgbShiftIntensity": 0,
-            "glowIntensity": 0,
-            "glitchAmount": 0.2
+            "glowIntensity": 0
           }
         },
         {
-          "targetIndex": 1,
+          "targetIndex": 1,      
           "video": "cartoons.mp4",
           "properties": {
             "width": 1024,
             "height": 1024,
             "opacity": 0.5,
-            "rgbShiftIntensity": 0,
-            "glowIntensity": 0,
-            "glitchAmount": 0.2
-          }
+            "glowIntensity": 0
+          },
+          "glbModel": "example.glb",
+          "transform": {
+            "position": { "x": 0, "y": 0, "z": 0.1 },
+            "rotation": { "x": 0, "y": 0, "z": 0 },
+            "scale": { "x": 1, "y": 1, "z": 1 },
+            "opacity": 0.5,
+            "glowIntensity": 1
+          } 
         }
       ]
     },
@@ -44,9 +48,7 @@
             "width": 1024,
             "height": 1024,
             "opacity": 0.75,
-            "rgbShiftIntensity": 0,
-            "glowIntensity": 1,
-            "glitchAmount": 0
+            "glowIntensity": 1
           }
         },
         {
@@ -56,9 +58,7 @@
             "width": 1024,
             "height": 1024,
             "opacity": 1,
-            "rgbShiftIntensity": 0,
-            "glowIntensity": 0,
-            "glitchAmount": 0
+            "glowIntensity": 0
           }
         }
       ]

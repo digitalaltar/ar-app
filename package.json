@@ -5,7 +5,7 @@
   },
   "dependencies": {
     "mind-ar": "^1.2.5",
-    "three": "^0.160.0"
+    "three": "^0.160.1"
   },
   "scripts": {
     "build": "webpack --mode production"
