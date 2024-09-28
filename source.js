@@ -156,55 +156,66 @@ async function loadARExperience(experience) {
     }
 }
 
-  // Custom Chromatic Aberration Shader
-  const ChromaticAberrationShader = {
-    uniforms: {
-      tDiffuse: { value: null },
-      amount: { value: 0.02 }, 
-      glitchAmount: { value: 0 }, 
-      time: { value: 0 }
-    },
-    vertexShader: `
-      varying vec2 vUv;
-      void main() {
-        vUv = uv;
-        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-      }
-    `,
-    fragmentShader: `
-      uniform sampler2D tDiffuse;
-      uniform float amount;
-      uniform float glitchAmount;
-      uniform float time;
-      varying vec2 vUv;
-      float random(vec2 co) {
-        return fract(sin(dot(co.xy, vec2(12.9898, 78.233))) * 43758.5453);
-      }
-      void main() {
-        vec2 uv = vUv;
+// Custom Chromatic Aberration Shader
+const ChromaticAberrationShader = {
+  uniforms: {
+    tDiffuse: { value: null },
+    amount: { value: 0.0 }, 
+    glitchAmount: { value: 0.0 }, 
+    time: { value: 0.0 }
+  },
+  vertexShader: `
+    varying vec2 vUv;
+    void main() {
+      vUv = uv;
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    }
+  `,
+  fragmentShader: `
+    uniform sampler2D tDiffuse;
+    uniform float amount;
+    uniform float glitchAmount;
+    uniform float time;
+    varying vec2 vUv;
+
+    float random(vec2 co) {
+      return fract(sin(dot(co.xy, vec2(12.9898, 78.233))) * 43758.5453);
+    }
+
+    void main() {
+      vec2 uv = vUv;
+
+      // Only apply glitch effect if glitchAmount > 0.0
+      if (glitchAmount > 0.0) {
         float blockSize = 0.05; // Size of glitch blocks
         vec2 blockCoords = floor(uv / blockSize) * blockSize; 
-        vec2 glitchMovement = vec2(sin(time * 5.0), cos(time * 3.0)) * blockSize * 0.5; 
+
+        // Random glitch effect based on time
         if (random(blockCoords + time) < glitchAmount) {
-          uv += glitchMovement; // Displace blocks
+          vec2 glitchMovement = vec2(sin(time * 5.0), cos(time * 3.0)) * blockSize * 0.5;
+          uv += glitchMovement;
         }
-        vec2 redOffset = amount * vec2(sin(time * 2.0), cos(time * 2.0));
-        vec2 greenOffset = amount * vec2(sin(time + 2.0), cos(time + 2.0));
-        vec2 blueOffset = amount * vec2(sin(time + 4.0), cos(time + 4.0));
-        vec4 cr = texture2D(tDiffuse, uv + redOffset);
-        vec4 cg = texture2D(tDiffuse, uv);
-        vec4 cb = texture2D(tDiffuse, uv - blueOffset);
-        gl_FragColor = vec4(cr.r, cg.g, cb.b, cg.a);
       }
-    `
-  };
+
+      // Apply chromatic aberration effect
+      vec2 redOffset = amount * vec2(sin(time * 2.0), cos(time * 2.0));
+      vec2 greenOffset = amount * vec2(sin(time + 2.0), cos(time + 2.0));
+      vec2 blueOffset = amount * vec2(sin(time + 4.0), cos(time + 4.0));
+
+      vec4 cr = texture2D(tDiffuse, uv + redOffset);
+      vec4 cg = texture2D(tDiffuse, uv);
+      vec4 cb = texture2D(tDiffuse, uv - blueOffset);
+
+      gl_FragColor = vec4(cr.r, cg.g, cb.b, cg.a);
+    }
+  `
+};
 
 // Custom Glow Shader
 const GlowShader = {
   uniforms: {
     tDiffuse: { value: null },
-    glowIntensity: { value: 1.0 },
-    glitchAmount: { value: 0 }, // Glitch intensity
+    glowIntensity: { value: 1.0 },  // Default minimum of 1.0
     time: { value: 0 }
   },
   vertexShader: `
@@ -217,19 +228,12 @@ const GlowShader = {
   fragmentShader: `
     uniform sampler2D tDiffuse;
     uniform float glowIntensity;
-    uniform float glitchAmount;
     uniform float time;
     varying vec2 vUv;
-    float random(vec2 co){
-      return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
-    }
+
     void main() {
       vec4 color = texture2D(tDiffuse, vUv);
-      // Controlled glitch: Hide only small parts of the image
-      if (random(vUv + time) < glitchAmount) {
-        color.rgb *= 0.5; // Make glitch darker for better visibility
-      }
-      vec3 glow = color.rgb * glowIntensity;
+      vec3 glow = color.rgb * (1.0 + glowIntensity); // Ensure intensity is 1 + value from JSON
       gl_FragColor = vec4(glow, color.a);
     }
   `
@@ -273,7 +277,7 @@ function setupTargetDetection(mediaData, experienceFolder){
 function applyEffects(properties) {
     const rgbShiftIntensity = properties.rgbShiftIntensity || 0;
     const glowIntensity = properties.glowIntensity || 0;
-    const glitchAmount = properties.glitchAmount || 0.1;
+    const glitchAmount = properties.glitchAmount || 0;
 
     chromaticAberrationPass.uniforms['amount'].value = rgbShiftIntensity;
     glowPass.uniforms['glowIntensity'].value = glowIntensity;
@@ -322,4 +326,4 @@ function createVideoPlane(videoSrc, videoWidth, videoHeight, opacity) {
     return { plane: new THREE.Mesh(geometry, material), video };
 }
 
-console.log('version check: 0.0.2');
+console.log('version check: 0.0.3');

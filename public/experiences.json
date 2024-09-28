@@ -16,7 +16,7 @@
             "opacity": 0.5,
             "rgbShiftIntensity": 0,
             "glowIntensity": 0,
-            "glitchAmount": 0
+            "glitchAmount": 0.2
           }
         },
         {
@@ -27,8 +27,8 @@
             "height": 1024,
             "opacity": 0.5,
             "rgbShiftIntensity": 0,
-            "glowIntensity": 1,
-            "glitchAmount": 0
+            "glowIntensity": 0,
+            "glitchAmount": 0.2
           }
         }
       ]
@@ -43,9 +43,9 @@
           "properties": {
             "width": 1024,
             "height": 1024,
-            "opacity": 0.5,
+            "opacity": 0.75,
             "rgbShiftIntensity": 0,
-            "glowIntensity": 0,
+            "glowIntensity": 1,
             "glitchAmount": 0
           }
         },
@@ -55,7 +55,7 @@
           "properties": {
             "width": 1024,
             "height": 1024,
-            "opacity": 0.5,
+            "opacity": 1,
             "rgbShiftIntensity": 0,
             "glowIntensity": 0,
             "glitchAmount": 0
