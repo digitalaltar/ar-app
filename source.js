@@ -2,6 +2,7 @@
 import * as THREE from 'three';
 import { MindARThree } from 'mind-ar/dist/mindar-image-three.prod.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'; // Import GLTFLoader for loading .glb files
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'; // Import DRACOLoader for Draco compression
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
@@ -12,6 +13,12 @@ let experiences = [];
 let experienceConfig;
 let lastExperience = null; // Track the last experience to prevent reloading
 let glowPass, composer;
+
+// Initialize GLTFLoader and DRACOLoader
+const loader = new GLTFLoader();
+const dracoLoader = new DRACOLoader();
+dracoLoader.setDecoderPath('');  // No need for an external path, bundling Draco in app.js
+loader.setDRACOLoader(dracoLoader);
 
 // Wait for the DOM to be fully loaded
 window.addEventListener('DOMContentLoaded', async () => {
@@ -154,32 +161,38 @@ async function loadARExperience(experience) {
     }
 }
 
-// Function to load a GLB model for each image
 // Function to load a GLB model for each image and apply transformations
 function loadGLBModel(url, anchor, transform) {
-    const loader = new GLTFLoader();
-    loader.load(url, (gltf) => {
-        const model = gltf.scene;
+    loader.load(
+        url,
+        (gltf) => {
+            const model = gltf.scene;
 
-        // Apply position, rotation, and scale from the transform object
-        if (transform) {
-            if (transform.position) {
-                model.position.set(transform.position.x, transform.position.y, transform.position.z);
+            // Apply position, rotation, and scale from the transform object
+            if (transform) {
+                if (transform.position) {
+                    model.position.set(transform.position.x, transform.position.y, transform.position.z);
+                }
+                if (transform.rotation) {
+                    model.rotation.set(
+                        THREE.MathUtils.degToRad(transform.rotation.x),
+                        THREE.MathUtils.degToRad(transform.rotation.y),
+                        THREE.MathUtils.degToRad(transform.rotation.z)
+                    );
+                }
+                if (transform.scale) {
+                    model.scale.set(transform.scale.x, transform.scale.y, transform.scale.z);
+                }
             }
-            if (transform.rotation) {
-                model.rotation.set(THREE.MathUtils.degToRad(transform.rotation.x), THREE.MathUtils.degToRad(transform.rotation.y), THREE.MathUtils.degToRad(transform.rotation.z));
-            }
-            if (transform.scale) {
-                model.scale.set(transform.scale.x, transform.scale.y, transform.scale.z);
-            }
+
+            anchor.group.add(model);  // Add the transformed model to the anchor group
+        },
+        undefined,  // onProgress
+        (error) => {
+            console.error('An error occurred while loading the GLB model:', error);
         }
-
-        anchor.group.add(model);  // Add the transformed model to the anchor group
-    }, undefined, (error) => {
-        console.error('An error occurred while loading the GLB model:', error);
-    });
+    );
 }
-
 
 // Custom Glow Shader
 const GlowShader = {
@@ -290,4 +303,4 @@ function createVideoPlane(videoSrc, videoWidth, videoHeight, opacity) {
     return { plane: new THREE.Mesh(geometry, material), video };
 }
 
-console.log('version check: 0.0.3e');
+console.log('version check: 0.0.3f');
