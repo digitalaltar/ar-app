@@ -15,7 +15,7 @@
             "height": 1024,
             "opacity": 0.5,
             "rgbShiftIntensity": 0,
-            "glowIntensity": 2,
+            "glowIntensity": 0,
             "glitchAmount": 0
           }
         },
@@ -27,7 +27,7 @@
             "height": 1024,
             "opacity": 0.5,
             "rgbShiftIntensity": 0,
-            "glowIntensity": 2,
+            "glowIntensity": 1,
             "glitchAmount": 0
           }
         }
@@ -45,7 +45,7 @@
             "height": 1024,
             "opacity": 0.5,
             "rgbShiftIntensity": 0,
-            "glowIntensity": 2,
+            "glowIntensity": 0,
             "glitchAmount": 0
           }
         },
@@ -57,7 +57,7 @@
             "height": 1024,
             "opacity": 0.5,
             "rgbShiftIntensity": 0,
-            "glowIntensity": 2,
+            "glowIntensity": 0,
             "glitchAmount": 0
           }
         }

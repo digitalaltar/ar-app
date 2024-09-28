@@ -8,9 +8,9 @@ import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
 // Global variables
 let mindARInstance = null;
 let experiences = [];
-let experienceConfig; 
+let experienceConfig;
 let lastExperience = null; // Track the last experience to prevent reloading
-let chromaticAberrationPass, glowPass;
+let chromaticAberrationPass, glowPass, composer;
 
 // Wait for the DOM to be fully loaded
 window.addEventListener('DOMContentLoaded', async () => {
@@ -66,7 +66,12 @@ async function disposeARSession() {
                 console.log('Renderer disposed');
 
                 mindARInstance.renderer.domElement = null;
-                console.log('DOM element nullified');
+                mindARInstance.renderer.state.reset(); // Reset WebGL state
+                console.log('DOM element nullified and WebGL state reset');
+            }
+
+            if (composer) {
+                composer.passes = [];  // Clear previous passes
             }
         } catch (error) {
             console.error('Error during disposal:', error);
@@ -121,13 +126,14 @@ async function loadARExperience(experience) {
         scene.add(pointLight);
 
         // Initialize EffectComposer for post-processing
-        const composer = new EffectComposer(renderer);
+        composer = new EffectComposer(renderer);
         
-        // Initialize shader passes
+        // Reinitialize shader passes to prevent reusing old ones
         chromaticAberrationPass = new ShaderPass(ChromaticAberrationShader);
         glowPass = new ShaderPass(GlowShader);
 
         // Add render and shader passes
+        composer.passes = [];  // Clear any previous passes
         composer.addPass(new RenderPass(scene, camera));
         composer.addPass(chromaticAberrationPass);
         composer.addPass(glowPass);
@@ -171,29 +177,23 @@ async function loadARExperience(experience) {
       uniform float glitchAmount;
       uniform float time;
       varying vec2 vUv;
-
       float random(vec2 co) {
         return fract(sin(dot(co.xy, vec2(12.9898, 78.233))) * 43758.5453);
       }
-
       void main() {
         vec2 uv = vUv;
         float blockSize = 0.05; // Size of glitch blocks
         vec2 blockCoords = floor(uv / blockSize) * blockSize; 
         vec2 glitchMovement = vec2(sin(time * 5.0), cos(time * 3.0)) * blockSize * 0.5; 
-
         if (random(blockCoords + time) < glitchAmount) {
           uv += glitchMovement; // Displace blocks
         }
-
         vec2 redOffset = amount * vec2(sin(time * 2.0), cos(time * 2.0));
         vec2 greenOffset = amount * vec2(sin(time + 2.0), cos(time + 2.0));
         vec2 blueOffset = amount * vec2(sin(time + 4.0), cos(time + 4.0));
-
         vec4 cr = texture2D(tDiffuse, uv + redOffset);
         vec4 cg = texture2D(tDiffuse, uv);
         vec4 cb = texture2D(tDiffuse, uv - blueOffset);
-
         gl_FragColor = vec4(cr.r, cg.g, cb.b, cg.a);
       }
     `
@@ -220,19 +220,15 @@ const GlowShader = {
     uniform float glitchAmount;
     uniform float time;
     varying vec2 vUv;
-
     float random(vec2 co){
       return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
     }
-
     void main() {
       vec4 color = texture2D(tDiffuse, vUv);
-
       // Controlled glitch: Hide only small parts of the image
       if (random(vUv + time) < glitchAmount) {
         color.rgb *= 0.5; // Make glitch darker for better visibility
       }
-
       vec3 glow = color.rgb * glowIntensity;
       gl_FragColor = vec4(glow, color.a);
     }
@@ -240,7 +236,7 @@ const GlowShader = {
 };
 
 // Function to set up target detection and media handling
-function setupTargetDetection(mediaData, experienceFolder) {
+function setupTargetDetection(mediaData, experienceFolder){
     mediaData.forEach((entry, index) => {
         const properties = entry.properties; 
         if (!properties) {
@@ -268,6 +264,7 @@ function setupTargetDetection(mediaData, experienceFolder) {
 
         anchor.onTargetLost = () => {
             video.pause(); 
+            resetEffects(); // Reset shaders when the target is lost
         };
     });
 }
@@ -280,7 +277,20 @@ function applyEffects(properties) {
 
     chromaticAberrationPass.uniforms['amount'].value = rgbShiftIntensity;
     glowPass.uniforms['glowIntensity'].value = glowIntensity;
-    chromaticAberrationPass.uniforms['glitchAmount'].value = glitchAmount;
+
+    // Apply glitch only if glitchAmount is greater than 0
+    if (glitchAmount > 0) {
+        chromaticAberrationPass.uniforms['glitchAmount'].value = glitchAmount;
+    } else {
+        chromaticAberrationPass.uniforms['glitchAmount'].value = 0;
+    }
+}
+
+// Function to reset shader effects
+function resetEffects() {
+    chromaticAberrationPass.uniforms['amount'].value = 0;
+    glowPass.uniforms['glowIntensity'].value = 0;
+    chromaticAberrationPass.uniforms['glitchAmount'].value = 0;
 }
 
 // Function to create a video plane
@@ -311,3 +321,5 @@ function createVideoPlane(videoSrc, videoWidth, videoHeight, opacity) {
 
     return { plane: new THREE.Mesh(geometry, material), video };
 }
+
+console.log('version check: 0.0.2');
