@@ -22,7 +22,7 @@ dracoLoader.setDecoderPath('./wasm/'); // Set the path to where your .wasm file 
 loader.setDRACOLoader(dracoLoader);
 
 // Smoothing factor for controlling how much smoothing to apply (adjust between 0 and 1)
-const smoothingFactor = 0.1;
+const smoothingFactor = 0.2;
 
 // Function to apply smoothing to an object's position
 function smoothPosition(object, targetPosition) {
@@ -382,7 +382,7 @@ function createVideoPlane(videoSrc, videoWidth, videoHeight, opacity) {
 
     const texture = new THREE.VideoTexture(video);
     const aspectRatio = videoWidth / videoHeight;
-    const planeWidth = 1; 
+    const planeWidth = 1.1; 
     const planeHeight = planeWidth / aspectRatio;
 
     const geometry = new THREE.PlaneGeometry(planeWidth, planeHeight);
@@ -400,7 +400,7 @@ function createImagePlane(imageSrc, imageWidth, imageHeight, opacity) {
     const texture = textureLoader.load(imageSrc);
 
     const aspectRatio = imageWidth / imageHeight;
-    const planeWidth = 1;  // Maintain aspect ratio
+    const planeWidth = 1.1;  // Maintain aspect ratio
     const planeHeight = planeWidth / aspectRatio;
 
     const geometry = new THREE.PlaneGeometry(planeWidth, planeHeight);
@@ -413,4 +413,4 @@ function createImagePlane(imageSrc, imageWidth, imageHeight, opacity) {
     return new THREE.Mesh(geometry, material);  // Return image plane mesh
 }
 
-console.log('version check: 0.0.4d');
+console.log('version check: 0.0.4e');
