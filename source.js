@@ -304,4 +304,4 @@ function createVideoPlane(videoSrc, videoWidth, videoHeight, opacity) {
     return { plane: new THREE.Mesh(geometry, material), video };
 }
 
-console.log('version check: 0.0.3i');
+console.log('version check: 0.0.3j');

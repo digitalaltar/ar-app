@@ -16,7 +16,7 @@
             "opacity": 0.5,
             "glowIntensity": 0
           },
-          "glbModel": "compressed2.glb",
+          "glbModel": "da.glb",
           "transform": {
             "position": { "x": 0, "y": 0, "z": 0.1 },
             "rotation": { "x": 0, "y": 0, "z": 0 },
@@ -57,7 +57,7 @@
             "height": 1024,
             "opacity": 0.75,
             "glowIntensity": 1
-          }
+          }      
         },
         {
           "targetIndex": 1,
