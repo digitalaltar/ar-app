@@ -274,13 +274,13 @@ function setupTargetDetection(mediaData, experienceFolder) {
 
         // Load the GLB model only if defined, and pass the transform object
         if (entry.glbModel) {
-            const glbModelPath = `${experienceConfig.basePath}${experienceFolder}/${entry.glbModel}`;
+            const glbModelPath = `${experienceConfig.basePath}${experienceFolder}/${experienceConfig.glbFolder}/${entry.glbModel}`;
             loadGLBModel(glbModelPath, anchor, transform);  // Pass the transform from JSON
         }
 
         // Handle video properties separately
         if (entry.video) {
-            const videoSrc = `${experienceConfig.basePath}${experienceFolder}/${entry.video}`;
+            const videoSrc = `${experienceConfig.basePath}${experienceFolder}/${experienceConfig.videoFolder}/${entry.video}`;
             const { width, height, opacity, glowIntensity } = properties || {};
 
             if (width === undefined || height === undefined || opacity === undefined || glowIntensity === undefined) {

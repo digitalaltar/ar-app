@@ -1,14 +1,285 @@
 {
   "basePath": "./experiences/",
+  "audioFolder": "audio",
+  "videoFolder": "video",
+  "glbFolder": "glb",
   "targetsFile": "targets.mind",
-  "thumbsFile": "thumbnail.png",
+  "thumbsFile": "thumb.png",
   "experiences": [
     {
-      "name": "Vaporwave Experience",
+      "name": "first.sequence",
+      "folder": "first-sequence",
+      "images": [
+        {
+          "targetIndex": 0,
+          "title": "first.sequence",
+          "audio": "",
+          "video": "",
+          "properties": {
+            "width": 1024,
+            "height": 1024,
+            "opacity": 0.5,
+            "glowIntensity": 0
+          },
+          "glbModel": "first-sequence.glb",
+          "transform": {
+            "position": { "x": 0, "y": 0, "z": 0.1 },
+            "rotation": { "x": 0, "y": 0, "z": 0 },
+            "scale": { "x": 1, "y": 1, "z": 1 },
+            "opacity": 0.5,
+            "glowIntensity": 1
+          }
+        },
+        {
+          "targetIndex": 1,
+          "title": "Memorystream",
+          "audio": "memorystream.mp3",
+          "video": "",
+          "properties": {
+            "width": 1024,
+            "height": 1024,
+            "opacity": 0.5,
+            "glowIntensity": 0
+          },
+          "glbModel": "memorystream.glb",
+          "transform": {
+            "position": { "x": 0, "y": 0, "z": 0.1 },
+            "rotation": { "x": 0, "y": 0, "z": 0 },
+            "scale": { "x": 1, "y": 1, "z": 1 },
+            "opacity": 0.5,
+            "glowIntensity": 1
+          }
+        },
+        {
+          "targetIndex": 2,
+          "title": "Inherited Shadows",
+          "audio": "inherited-shadows.mp3",
+          "video": "",
+          "properties": {
+            "width": 1024,
+            "height": 1024,
+            "opacity": 0.5,
+            "glowIntensity": 0
+          },
+          "glbModel": "inherited-shadows.glb",
+          "transform": {
+            "position": { "x": 0, "y": 0, "z": 0.1 },
+            "rotation": { "x": 0, "y": 0, "z": 0 },
+            "scale": { "x": 1, "y": 1, "z": 1 },
+            "opacity": 0.5,
+            "glowIntensity": 1
+          }
+        },
+        {
+          "targetIndex": 3,
+          "title": "Brass Palm Trees",
+          "audio": "brass-palm-trees.mp3",
+          "video": "",
+          "properties": {
+            "width": 1024,
+            "height": 1024,
+            "opacity": 0.5,
+            "glowIntensity": 0
+          },
+          "glbModel": "brass-palm-trees.glb",
+          "transform": {
+            "position": { "x": 0, "y": 0, "z": 0.1 },
+            "rotation": { "x": 0, "y": 0, "z": 0 },
+            "scale": { "x": 1, "y": 1, "z": 1 },
+            "opacity": 0.5,
+            "glowIntensity": 1
+          }
+        },
+        {
+          "targetIndex": 4,
+          "title": "Midland Pulse",
+          "audio": "midland-pulse.mp3",
+          "video": "",
+          "properties": {
+            "width": 1024,
+            "height": 1024,
+            "opacity": 0.5,
+            "glowIntensity": 0
+          },
+          "glbModel": "midland-pulse.glb",
+          "transform": {
+            "position": { "x": 0, "y": 0, "z": 0.1 },
+            "rotation": { "x": 0, "y": 0, "z": 0 },
+            "scale": { "x": 1, "y": 1, "z": 1 },
+            "opacity": 0.5,
+            "glowIntensity": 1
+          }
+        },
+        {
+          "targetIndex": 5,
+          "title": "Flight to Callisto",
+          "audio": "flight-to-callisto.mp3",
+          "video": "",
+          "properties": {
+            "width": 1024,
+            "height": 1024,
+            "opacity": 0.5,
+            "glowIntensity": 0
+          },
+          "glbModel": "flight-to-callisto.glb",
+          "transform": {
+            "position": { "x": 0, "y": 0, "z": 0.1 },
+            "rotation": { "x": 0, "y": 0, "z": 0 },
+            "scale": { "x": 1, "y": 1, "z": 1 },
+            "opacity": 0.5,
+            "glowIntensity": 1
+          }
+        },
+        {
+          "targetIndex": 6,
+          "title": "We Roamed Too Far",
+          "audio": "we-roamed-too-far.mp3",
+          "video": "",
+          "properties": {
+            "width": 1024,
+            "height": 1024,
+            "opacity": 0.5,
+            "glowIntensity": 0
+          },
+          "glbModel": "we-roamed-too-far.glb",
+          "transform": {
+            "position": { "x": 0, "y": 0, "z": 0.1 },
+            "rotation": { "x": 0, "y": 0, "z": 0 },
+            "scale": { "x": 1, "y": 1, "z": 1 },
+            "opacity": 0.5,
+            "glowIntensity": 1
+          }
+        },
+        {
+          "targetIndex": 7,
+          "title": "The Joy of Leaves",
+          "audio": "the-joy-of-leaves.mp3",
+          "video": "",
+          "properties": {
+            "width": 1024,
+            "height": 1024,
+            "opacity": 0.5,
+            "glowIntensity": 0
+          },
+          "glbModel": "the-joy-of-leaves.glb",
+          "transform": {
+            "position": { "x": 0, "y": 0, "z": 0.1 },
+            "rotation": { "x": 0, "y": 0, "z": 0 },
+            "scale": { "x": 1, "y": 1, "z": 1 },
+            "opacity": 0.5,
+            "glowIntensity": 1
+          }
+        },
+        {
+          "targetIndex": 8,
+          "title": "Emergence",
+          "audio": "emergence.mp3",
+          "video": "",
+          "properties": {
+            "width": 1024,
+            "height": 1024,
+            "opacity": 0.5,
+            "glowIntensity": 0
+          },
+          "glbModel": "emergence.glb",
+          "transform": {
+            "position": { "x": 0, "y": 0, "z": 0.1 },
+            "rotation": { "x": 0, "y": 0, "z": 0 },
+            "scale": { "x": 1, "y": 1, "z": 1 },
+            "opacity": 0.5,
+            "glowIntensity": 1
+          }
+        },
+        {
+          "targetIndex": 9,
+          "title": "Prismatica",
+          "audio": "prismatica.mp3",
+          "video": "",
+          "properties": {
+            "width": 1024,
+            "height": 1024,
+            "opacity": 0.5,
+            "glowIntensity": 0
+          },
+          "glbModel": "prismatica.glb",
+          "transform": {
+            "position": { "x": 0, "y": 0, "z": 0.1 },
+            "rotation": { "x": 0, "y": 0, "z": 0 },
+            "scale": { "x": 1, "y": 1, "z": 1 },
+            "opacity": 0.5,
+            "glowIntensity": 1
+          }
+        },
+        {
+          "targetIndex": 10,
+          "title": "Orange Cat",
+          "audio": "orange-cat.mp3",
+          "video": "",
+          "properties": {
+            "width": 1024,
+            "height": 1024,
+            "opacity": 0.5,
+            "glowIntensity": 0
+          },
+          "glbModel": "orange-cat.glb",
+          "transform": {
+            "position": { "x": 0, "y": 0, "z": 0.1 },
+            "rotation": { "x": 0, "y": 0, "z": 0 },
+            "scale": { "x": 1, "y": 1, "z": 1 },
+            "opacity": 0.5,
+            "glowIntensity": 1
+          }
+        },
+        {
+          "targetIndex": 11,
+          "title": "Chlorophyll",
+          "audio": "chlorophyll.mp3",
+          "video": "",
+          "properties": {
+            "width": 1024,
+            "height": 1024,
+            "opacity": 0.5,
+            "glowIntensity": 0
+          },
+          "glbModel": "chlorophyll.glb",
+          "transform": {
+            "position": { "x": 0, "y": 0, "z": 0.1 },
+            "rotation": { "x": 0, "y": 0, "z": 0 },
+            "scale": { "x": 1, "y": 1, "z": 1 },
+            "opacity": 0.5,
+            "glowIntensity": 1
+          }
+        },
+        {
+          "targetIndex": 12,
+          "title": "Cicadas Dreaming",
+          "audio": "cicadas-dreaming.mp3",
+          "video": "",
+          "properties": {
+            "width": 1024,
+            "height": 1024,
+            "opacity": 0.5,
+            "glowIntensity": 0
+          },
+          "glbModel": "",
+          "transform": {
+            "position": { "x": 0, "y": 0, "z": 0.1 },
+            "rotation": { "x": 0, "y": 0, "z": 0 },
+            "scale": { "x": 1, "y": 1, "z": 1 },
+            "opacity": 0.5,
+            "glowIntensity": 1
+          }
+        }
+      ]
+    },
+    {
+      "name": "Vaporwave",
       "folder": "vaporwave",
       "images": [
         {
           "targetIndex": 0,
+          "title": "",
+          "audio": "",
           "video": "astronaut.mp4",
           "properties": {
             "width": 1024,
@@ -26,7 +297,9 @@
           }
         },
         {
-          "targetIndex": 1,      
+          "targetIndex": 1,
+          "title": "",
+          "audio": "",  
           "video": "cartoons.mp4",
           "properties": {
             "width": 1024,
@@ -42,32 +315,6 @@
             "opacity": 0.5,
             "glowIntensity": 1
           } 
-        }
-      ]
-    },
-    {
-      "name": "Personas Experience",
-      "folder": "personas",
-      "images": [
-        {
-          "targetIndex": 0,
-          "video": "aquila.mp4",
-          "properties": {
-            "width": 1024,
-            "height": 1024,
-            "opacity": 0.75,
-            "glowIntensity": 1
-          }      
-        },
-        {
-          "targetIndex": 1,
-          "video": "dianthus.mp4",
-          "properties": {
-            "width": 1024,
-            "height": 1024,
-            "opacity": 1,
-            "glowIntensity": 0
-          }
         }
       ]
     }
