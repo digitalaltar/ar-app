@@ -6,8 +6,28 @@ module.exports = {
     filename: 'app.js',
     path: path.resolve(__dirname, 'public'),
   },
-  resolve: {
-      extensions: ['.js']
-  },
   mode: 'development',
+  module: {
+    rules: [
+      {
+        test: /\.(wasm)$/,
+        type: 'javascript/auto',
+        use: {
+          loader: 'file-loader',
+          options: {
+            name: '[name].[ext]',
+            outputPath: 'public/wasm/', // Specifies the folder where the wasm file will be output
+          },
+        },
+      },
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: 'babel-loader',
+      },
+    ],
+  },
+  resolve: {
+    extensions: ['.js'],
+  },
 };

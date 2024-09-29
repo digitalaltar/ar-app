@@ -17,9 +17,8 @@ let glowPass, composer;
 // Initialize GLTFLoader and DRACOLoader
 const loader = new GLTFLoader();
 const dracoLoader = new DRACOLoader();
+dracoLoader.setDecoderPath('./wasm/'); // Set the path to where your .wasm file will be
 
-// Set DRACOLoader to use the JavaScript decoder (bundled inside the app)
-dracoLoader.setDecoderConfig({ type: 'js' });  // This prevents the loader from using WASM and external files
 loader.setDRACOLoader(dracoLoader);
 
 // Wait for the DOM to be fully loaded
@@ -305,4 +304,4 @@ function createVideoPlane(videoSrc, videoWidth, videoHeight, opacity) {
     return { plane: new THREE.Mesh(geometry, material), video };
 }
 
-console.log('version check: 0.0.3h');
+console.log('version check: 0.0.3i');
