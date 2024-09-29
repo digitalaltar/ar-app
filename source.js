@@ -48,28 +48,23 @@ window.addEventListener('DOMContentLoaded', async () => {
       if (credits.classList.contains('show')) {
         // Collapse
         const creditsHeight = credits.scrollHeight + 'px'; // Get the current full height
-        credits.style.height = creditsHeight; // Set the height before collapsing
+        credits.style.height = creditsHeight; // Set the height before collapsing to avoid sudden jump
         setTimeout(() => {
           credits.style.height = '0'; // Set height to 0 to collapse
-        }, 10); // Slight delay to ensure smooth transition
+        }, 1);
       } else {
         // Expand
+        credits.style.height = 'auto'; // Temporarily set to auto to get the correct height
         const creditsHeight = credits.scrollHeight + 'px'; // Get the current full height
-        credits.style.height = '0'; // Start from height 0
+        credits.style.height = '0'; // Set it back to 0 before the expansion
         setTimeout(() => {
-          credits.style.height = creditsHeight; // Set height to full height to expand
-        }, 10); // Slight delay to ensure smooth transition
-
-        // After the transition, reset the height to 'auto' to allow for dynamic content resizing
-        setTimeout(() => {
-          credits.style.height = 'auto';
-        }, 500); // Match the transition duration (0.5s)
+          credits.style.height = creditsHeight; // Smoothly expand to the full height
+        }, 1);
       }
 
-      // Toggle visibility class
       credits.classList.toggle('show');
       
-      // Toggle the .open class for the opacity of #attribution
+      // Toggle the .open class for opacity of #attribution
       if (credits.classList.contains('show')) {
         attribution.classList.add('open');
       } else {
