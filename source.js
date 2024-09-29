@@ -57,7 +57,7 @@ function createThumbnailMenu(config) {
         const thumbnail = document.createElement('img');
         thumbnail.src = `${config.basePath}${exp.folder}/${config.thumbsFile}`; 
         thumbnail.alt = exp.name;
-        thumbnail.className = 'thumbnail'; 
+        thumbnail.className = 'thumb'; 
 
         thumbnail.addEventListener('click', () => {
             loadARExperience(exp); 
@@ -390,4 +390,4 @@ function createImagePlane(imageSrc, imageWidth, imageHeight, opacity) {
     return new THREE.Mesh(geometry, material);  // Return image plane mesh
 }
 
-console.log('version check: 0.0.4a');
+console.log('version check: 0.0.4b');
