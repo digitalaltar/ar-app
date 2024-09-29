@@ -62,7 +62,6 @@ body {
   overflow: hidden;
 }
 #attribution:hover, #attribution:active {
-  width: 200px; /* On hover, expand width */
   opacity: 1;
 }
 #attribution.open {
