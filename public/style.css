@@ -61,6 +61,9 @@ body {
   width: 100px; /* Initial smaller width */
   overflow: hidden;
 }
+#attribution:hover {
+  width: 200px;
+}
 #attribution:hover, #attribution:active {
   opacity: 1;
 }
@@ -96,7 +99,6 @@ body {
 #site-credits.show {
   margin-top: 10px;
   padding: 0 0 10px 20px;
-  height: auto; /* Set dynamically with JavaScript */
   opacity: 1; /* Fully visible */
   transform: translateY(0); /* Slide back into place */
 }
