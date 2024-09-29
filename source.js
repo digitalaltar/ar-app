@@ -45,23 +45,6 @@ window.addEventListener('DOMContentLoaded', async () => {
 
     // Function to smoothly transition height
     function toggleSiteCredits() {
-      if (credits.classList.contains('show')) {
-        // Collapse
-        const creditsHeight = credits.scrollHeight + 'px'; // Get the current full height
-        credits.style.height = creditsHeight; // Set the height before collapsing to avoid sudden jump
-        setTimeout(() => {
-          credits.style.height = '0'; // Set height to 0 to collapse
-        }, 1);
-      } else {
-        // Expand
-        credits.style.height = 'auto'; // Temporarily set to auto to get the correct height
-        const creditsHeight = credits.scrollHeight + 'px'; // Get the current full height
-        credits.style.height = '0'; // Set it back to 0 before the expansion
-        setTimeout(() => {
-          credits.style.height = creditsHeight; // Smoothly expand to the full height
-        }, 1);
-      }
-
       credits.classList.toggle('show');
       
       // Toggle the .open class for opacity of #attribution
@@ -430,4 +413,4 @@ function createImagePlane(imageSrc, imageWidth, imageHeight, opacity) {
     return new THREE.Mesh(geometry, material);  // Return image plane mesh
 }
 
-console.log('version check: 0.0.4c');
+console.log('version check: 0.0.4d');
