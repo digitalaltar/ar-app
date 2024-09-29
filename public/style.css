@@ -62,7 +62,7 @@ body {
   overflow: hidden;
 }
 #attribution:hover {
-  width: 200px;
+  width: 150px;
 }
 #attribution:hover, #attribution:active {
   opacity: 1;
@@ -92,15 +92,14 @@ body {
   height: 0; /* Initially collapsed */
   overflow: hidden; /* Ensure no content shows outside the div when collapsed */
   opacity: 0; /* Fully transparent initially */
-  transform: translateY(-20px); /* Move up when collapsed */
-  transition: height 0.5s ease, opacity 0.5s ease, transform 0.5s ease;
+  transition: height 1s ease, opacity 1s ease;
 }
 /* Visible state */
 #site-credits.show {
+  height: auto;
   margin-top: 10px;
   padding: 0 0 10px 20px;
   opacity: 1; /* Fully visible */
-  transform: translateY(0); /* Slide back into place */
 }
 #site-credits li {
   margin-bottom: 5px;
