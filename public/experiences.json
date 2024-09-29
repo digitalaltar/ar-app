@@ -2,6 +2,7 @@
   "basePath": "./experiences/",
   "audioFolder": "audio",
   "videoFolder": "video",
+  "imageFolder": "image",
   "glbFolder": "glb",
   "targetsFile": "targets.mind",
   "thumbsFile": "thumb.png",
@@ -9,24 +10,26 @@
     {
       "name": "first.sequence",
       "folder": "first-sequence",
-      "images": [
+      "targets": [
         {
           "targetIndex": 0,
           "title": "first.sequence",
           "audio": "",
+          "image": "",
           "video": "",
-          "properties": {
+          "videoProperties": {
+            "position": { "x": 0, "y": 0, "z": 0 },
             "width": 1024,
             "height": 1024,
-            "opacity": 0.5,
-            "glowIntensity": 0
+            "opacity": 1,
+            "glowIntensity": 1
           },
           "glbModel": "first-sequence.glb",
           "transform": {
             "position": { "x": 0, "y": 0, "z": 0.1 },
             "rotation": { "x": 0, "y": 0, "z": 0 },
             "scale": { "x": 1, "y": 1, "z": 1 },
-            "opacity": 0.5,
+            "opacity": 1,
             "glowIntensity": 1
           }
         },
@@ -35,18 +38,19 @@
           "title": "Memorystream",
           "audio": "memorystream.mp3",
           "video": "",
-          "properties": {
+          "videoProperties": {
+            "position": { "x": 0, "y": 0, "z": 0 },
             "width": 1024,
             "height": 1024,
-            "opacity": 0.5,
-            "glowIntensity": 0
+            "opacity": 1,
+            "glowIntensity": 1
           },
           "glbModel": "memorystream.glb",
           "transform": {
             "position": { "x": 0, "y": 0, "z": 0.1 },
             "rotation": { "x": 0, "y": 0, "z": 0 },
             "scale": { "x": 1, "y": 1, "z": 1 },
-            "opacity": 0.5,
+            "opacity": 1,
             "glowIntensity": 1
           }
         },
@@ -55,18 +59,19 @@
           "title": "Inherited Shadows",
           "audio": "inherited-shadows.mp3",
           "video": "",
-          "properties": {
+          "videoProperties": {
+            "position": { "x": 0, "y": 0, "z": 0 },
             "width": 1024,
             "height": 1024,
-            "opacity": 0.5,
-            "glowIntensity": 0
+            "opacity": 1,
+            "glowIntensity": 1
           },
           "glbModel": "inherited-shadows.glb",
           "transform": {
             "position": { "x": 0, "y": 0, "z": 0.1 },
             "rotation": { "x": 0, "y": 0, "z": 0 },
             "scale": { "x": 1, "y": 1, "z": 1 },
-            "opacity": 0.5,
+            "opacity": 1,
             "glowIntensity": 1
           }
         },
@@ -75,18 +80,19 @@
           "title": "Brass Palm Trees",
           "audio": "brass-palm-trees.mp3",
           "video": "",
-          "properties": {
+          "videoProperties": {
+            "position": { "x": 0, "y": 0, "z": 0 },
             "width": 1024,
             "height": 1024,
-            "opacity": 0.5,
-            "glowIntensity": 0
+            "opacity": 1,
+            "glowIntensity": 1
           },
           "glbModel": "brass-palm-trees.glb",
           "transform": {
             "position": { "x": 0, "y": 0, "z": 0.1 },
             "rotation": { "x": 0, "y": 0, "z": 0 },
             "scale": { "x": 1, "y": 1, "z": 1 },
-            "opacity": 0.5,
+            "opacity": 1,
             "glowIntensity": 1
           }
         },
@@ -95,18 +101,19 @@
           "title": "Midland Pulse",
           "audio": "midland-pulse.mp3",
           "video": "",
-          "properties": {
+          "videoProperties": {
+            "position": { "x": 0, "y": 0, "z": 0 },
             "width": 1024,
             "height": 1024,
-            "opacity": 0.5,
-            "glowIntensity": 0
+            "opacity": 1,
+            "glowIntensity": 1
           },
           "glbModel": "midland-pulse.glb",
           "transform": {
             "position": { "x": 0, "y": 0, "z": 0.1 },
             "rotation": { "x": 0, "y": 0, "z": 0 },
             "scale": { "x": 1, "y": 1, "z": 1 },
-            "opacity": 0.5,
+            "opacity": 1,
             "glowIntensity": 1
           }
         },
@@ -115,18 +122,19 @@
           "title": "Flight to Callisto",
           "audio": "flight-to-callisto.mp3",
           "video": "",
-          "properties": {
+          "videoProperties": {
+            "position": { "x": 0, "y": 0, "z": 0 },
             "width": 1024,
             "height": 1024,
-            "opacity": 0.5,
-            "glowIntensity": 0
+            "opacity": 1,
+            "glowIntensity": 1
           },
           "glbModel": "flight-to-callisto.glb",
           "transform": {
             "position": { "x": 0, "y": 0, "z": 0.1 },
             "rotation": { "x": 0, "y": 0, "z": 0 },
             "scale": { "x": 1, "y": 1, "z": 1 },
-            "opacity": 0.5,
+            "opacity": 1,
             "glowIntensity": 1
           }
         },
@@ -135,18 +143,19 @@
           "title": "We Roamed Too Far",
           "audio": "we-roamed-too-far.mp3",
           "video": "",
-          "properties": {
+          "videoProperties": {
+            "position": { "x": 0, "y": 0, "z": 0 },
             "width": 1024,
             "height": 1024,
-            "opacity": 0.5,
-            "glowIntensity": 0
+            "opacity": 1,
+            "glowIntensity": 1
           },
           "glbModel": "we-roamed-too-far.glb",
           "transform": {
             "position": { "x": 0, "y": 0, "z": 0.1 },
             "rotation": { "x": 0, "y": 0, "z": 0 },
             "scale": { "x": 1, "y": 1, "z": 1 },
-            "opacity": 0.5,
+            "opacity": 1,
             "glowIntensity": 1
           }
         },
@@ -155,18 +164,19 @@
           "title": "The Joy of Leaves",
           "audio": "the-joy-of-leaves.mp3",
           "video": "",
-          "properties": {
+          "videoProperties": {
+            "position": { "x": 0, "y": 0, "z": 0 },
             "width": 1024,
             "height": 1024,
-            "opacity": 0.5,
-            "glowIntensity": 0
+            "opacity": 1,
+            "glowIntensity": 1
           },
           "glbModel": "the-joy-of-leaves.glb",
           "transform": {
             "position": { "x": 0, "y": 0, "z": 0.1 },
             "rotation": { "x": 0, "y": 0, "z": 0 },
             "scale": { "x": 1, "y": 1, "z": 1 },
-            "opacity": 0.5,
+            "opacity": 1,
             "glowIntensity": 1
           }
         },
@@ -175,18 +185,19 @@
           "title": "Emergence",
           "audio": "emergence.mp3",
           "video": "",
-          "properties": {
+          "videoProperties": {
+            "position": { "x": 0, "y": 0, "z": 0 },
             "width": 1024,
             "height": 1024,
-            "opacity": 0.5,
-            "glowIntensity": 0
+            "opacity": 1,
+            "glowIntensity": 1
           },
           "glbModel": "emergence.glb",
           "transform": {
             "position": { "x": 0, "y": 0, "z": 0.1 },
             "rotation": { "x": 0, "y": 0, "z": 0 },
             "scale": { "x": 1, "y": 1, "z": 1 },
-            "opacity": 0.5,
+            "opacity": 1,
             "glowIntensity": 1
           }
         },
@@ -195,18 +206,19 @@
           "title": "Prismatica",
           "audio": "prismatica.mp3",
           "video": "",
-          "properties": {
+          "videoProperties": {
+            "position": { "x": 0, "y": 0, "z": 0 },
             "width": 1024,
             "height": 1024,
-            "opacity": 0.5,
-            "glowIntensity": 0
+            "opacity": 1,
+            "glowIntensity": 1
           },
           "glbModel": "prismatica.glb",
           "transform": {
             "position": { "x": 0, "y": 0, "z": 0.1 },
             "rotation": { "x": 0, "y": 0, "z": 0 },
             "scale": { "x": 1, "y": 1, "z": 1 },
-            "opacity": 0.5,
+            "opacity": 1,
             "glowIntensity": 1
           }
         },
@@ -215,18 +227,19 @@
           "title": "Orange Cat",
           "audio": "orange-cat.mp3",
           "video": "",
-          "properties": {
+          "videoProperties": {
+            "position": { "x": 0, "y": 0, "z": 0 },
             "width": 1024,
             "height": 1024,
-            "opacity": 0.5,
-            "glowIntensity": 0
+            "opacity": 1,
+            "glowIntensity": 1
           },
           "glbModel": "orange-cat.glb",
           "transform": {
             "position": { "x": 0, "y": 0, "z": 0.1 },
             "rotation": { "x": 0, "y": 0, "z": 0 },
             "scale": { "x": 1, "y": 1, "z": 1 },
-            "opacity": 0.5,
+            "opacity": 1,
             "glowIntensity": 1
           }
         },
@@ -235,18 +248,19 @@
           "title": "Chlorophyll",
           "audio": "chlorophyll.mp3",
           "video": "",
-          "properties": {
+          "videoProperties": {
+            "position": { "x": 0, "y": 0, "z": 0 },
             "width": 1024,
             "height": 1024,
-            "opacity": 0.5,
-            "glowIntensity": 0
+            "opacity": 1,
+            "glowIntensity": 1
           },
           "glbModel": "chlorophyll.glb",
           "transform": {
             "position": { "x": 0, "y": 0, "z": 0.1 },
             "rotation": { "x": 0, "y": 0, "z": 0 },
             "scale": { "x": 1, "y": 1, "z": 1 },
-            "opacity": 0.5,
+            "opacity": 1,
             "glowIntensity": 1
           }
         },
@@ -254,19 +268,28 @@
           "targetIndex": 12,
           "title": "Cicadas Dreaming",
           "audio": "cicadas-dreaming.mp3",
-          "video": "",
-          "properties": {
+          "image": "cicadas-dreaming.png",
+          "imageProperties": {
+            "position": { "x": 0, "y": 0, "z": 0.1 },
             "width": 1024,
             "height": 1024,
-            "opacity": 0.5,
-            "glowIntensity": 0
+            "opacity": 1,
+            "glowIntensity": 1
+          },
+          "video": "",
+          "videoProperties": {
+            "position": { "x": 0, "y": 0, "z": 0 },
+            "width": 1024,
+            "height": 1024,
+            "opacity": 1,
+            "glowIntensity": 1
           },
           "glbModel": "",
           "transform": {
-            "position": { "x": 0, "y": 0, "z": 0.1 },
+            "position": { "x": 0, "y": 0, "z": 0.2 },
             "rotation": { "x": 0, "y": 0, "z": 0 },
             "scale": { "x": 1, "y": 1, "z": 1 },
-            "opacity": 0.5,
+            "opacity": 1,
             "glowIntensity": 1
           }
         }
@@ -275,24 +298,25 @@
     {
       "name": "Vaporwave",
       "folder": "vaporwave",
-      "images": [
+      "targets": [
         {
           "targetIndex": 0,
           "title": "",
           "audio": "",
           "video": "astronaut.mp4",
-          "properties": {
+          "videoProperties": {
+            "position": { "x": 0, "y": 0, "z": 0 },
             "width": 1024,
             "height": 1024,
-            "opacity": 0.5,
-            "glowIntensity": 0
+            "opacity": 1,
+            "glowIntensity": 1
           },
           "glbModel": "da.glb",
           "transform": {
             "position": { "x": 0, "y": 0, "z": 0.1 },
             "rotation": { "x": 0, "y": 0, "z": 0 },
             "scale": { "x": 1, "y": 1, "z": 1 },
-            "opacity": 0.5,
+            "opacity": 1,
             "glowIntensity": 1
           }
         },
@@ -301,18 +325,19 @@
           "title": "",
           "audio": "",  
           "video": "cartoons.mp4",
-          "properties": {
+          "videoProperties": {
+            "position": { "x": 0, "y": 0, "z": 0 },
             "width": 1024,
             "height": 1024,
-            "opacity": 0.5,
-            "glowIntensity": 0
+            "opacity": 1,
+            "glowIntensity": 1
           },
           "glbModel": "compressed.glb",
           "transform": {
             "position": { "x": 0, "y": 0, "z": 0.1 },
             "rotation": { "x": 0, "y": 0, "z": 0 },
             "scale": { "x": 1, "y": 1, "z": 1 },
-            "opacity": 0.5,
+            "opacity": 1,
             "glowIntensity": 1
           } 
         }

@@ -146,7 +146,7 @@ async function loadARExperience(experience) {
         composer.addPass(glowPass);
 
         // Set up target detection and media handling (GLB, FBX, and video) for each image
-        setupTargetDetection(experience.images, experience.folder);
+        setupTargetDetection(experience.targets, experience.folder);
 
         // Animation loop for rendering and shader updates
         const clock = new THREE.Clock();
@@ -263,44 +263,58 @@ const GlowShader = {
 // Function to set up target detection and media handling
 function setupTargetDetection(mediaData, experienceFolder) {
     mediaData.forEach((entry) => {
-        const { targetIndex, transform, properties } = entry;
-        if (!transform && !properties) {
-            console.error(`Transform or properties are missing for image with target index ${targetIndex}`);
-            return;
-        }
+        const { targetIndex, transform, videoProperties, imageProperties } = entry;
 
         // Create an anchor for each image using its target index
         const anchor = mindARInstance.addAnchor(targetIndex);
 
+        let video, videoPlane;  // Declare video and videoPlane variables here
+
+        // Handle video properties separately
+        if (entry.video && entry.video !== "") {
+            const videoSrc = `${experienceConfig.basePath}${experienceFolder}/${experienceConfig.videoFolder}/${entry.video}`;
+            const { width, height, opacity, position } = videoProperties || {};
+
+            // Assign values to video and videoPlane
+            ({ plane: videoPlane, video } = createVideoPlane(videoSrc, width, height, opacity));
+
+            if (position) {
+                videoPlane.position.set(position.x, position.y, position.z);
+            }
+            anchor.group.add(videoPlane);  // Add the video plane to the anchor group
+        }
+
+        let imagePlane;  // Declare imagePlane variable
+
+        // Handle image plane only if the image field is populated (not empty)
+        if (entry.image && entry.image !== "") {
+            const imageSrc = `${experienceConfig.basePath}${experienceFolder}/${experienceConfig.imageFolder}/${entry.image}`;
+            const { width, height, opacity, position } = imageProperties || {};
+
+            imagePlane = createImagePlane(imageSrc, width, height, opacity);  // Assign imagePlane
+            if (position) {
+                imagePlane.position.set(position.x, position.y, position.z);  // Set image position from imageProperties
+            }
+            anchor.group.add(imagePlane);  // Add the image plane to the anchor group
+        }
+
         // Load the GLB model only if defined, and pass the transform object
-        if (entry.glbModel) {
+        if (entry.glbModel && entry.glbModel !== "") {
             const glbModelPath = `${experienceConfig.basePath}${experienceFolder}/${experienceConfig.glbFolder}/${entry.glbModel}`;
             loadGLBModel(glbModelPath, anchor, transform);  // Pass the transform from JSON
         }
 
-        // Handle video properties separately
-        if (entry.video) {
-            const videoSrc = `${experienceConfig.basePath}${experienceFolder}/${experienceConfig.videoFolder}/${entry.video}`;
-            const { width, height, opacity, glowIntensity } = properties || {};
+        // Handle target found and lost events
+        anchor.onTargetFound = () => {
+            if (video) video.play();  // Start video playback when the target is detected, only if video exists
+            if (videoProperties) applyEffects(videoProperties);  // Apply glow shader effects for video
+            if (imageProperties) applyEffects(imageProperties);  // Apply glow shader effects for image
+        };
 
-            if (width === undefined || height === undefined || opacity === undefined || glowIntensity === undefined) {
-                console.error(`Missing properties for media entry with target index ${targetIndex}`);
-                return;
-            }
-
-            const { plane, video } = createVideoPlane(videoSrc, width, height, opacity);
-            anchor.group.add(plane);  // Add the video plane to the anchor group
-
-            anchor.onTargetFound = () => {
-                video.play();  // Start video playback when the target is detected
-                applyEffects(properties);  // Apply glow shader effects for the video
-            };
-
-            anchor.onTargetLost = () => {
-                video.pause();  // Pause video when the target is lost
-                resetEffects();  // Reset shader effects for the video
-            };
-        }
+        anchor.onTargetLost = () => {
+            if (video) video.pause();  // Pause video when the target is lost, only if video exists
+            resetEffects();  // Reset shader effects
+        };
     });
 }
 
@@ -350,4 +364,22 @@ function createVideoPlane(videoSrc, videoWidth, videoHeight, opacity) {
     return { plane: new THREE.Mesh(geometry, material), video };
 }
 
-console.log('version check: 0.0.3k');
+function createImagePlane(imageSrc, imageWidth, imageHeight, opacity) {
+    const textureLoader = new THREE.TextureLoader();
+    const texture = textureLoader.load(imageSrc);
+
+    const aspectRatio = imageWidth / imageHeight;
+    const planeWidth = 1;  // Maintain aspect ratio
+    const planeHeight = planeWidth / aspectRatio;
+
+    const geometry = new THREE.PlaneGeometry(planeWidth, planeHeight);
+    const material = new THREE.MeshBasicMaterial({
+        map: texture,
+        transparent: true,
+        opacity: opacity
+    });
+
+    return new THREE.Mesh(geometry, material);  // Return image plane mesh
+}
+
+console.log('version check: 0.0.3n');
