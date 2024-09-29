@@ -30,11 +30,11 @@ body {
   margin: 0 10px 0 0;
   border-radius: 4px;
   transition: all 0.4s ease-in-out;
-  filter: brightness(.75);
-  opacity: .75;
+  filter: brightness(.6);
+  opacity: .6;
 }
-.thumb:hover {
-  filter: brightness(1.2);
+.thumb:hover, .thumb:active, .selected {
+  filter: brightness(1);
   transform: scale(1.05);
   opacity: 1;
 }
@@ -45,19 +45,31 @@ body {
   text-align: left;
   z-index: 100;
   color: white;
-  padding: 10px 0;
-  font-size: .8em;
   letter-spacing: .03em;
 }
 #attribution { 
   float: right;
   padding: 5px 20px 5px 10px;
   color: white;
-  font-size: 12px;
+  font-size: 0.7rem;
   letter-spacing: .03em;
   border-bottom-left-radius: 4px;
   border-top-left-radius: 4px;
-  background: black;
+  background: rgba(0,0,0,.5);
+  transition: opacity 0.4s ease-in-out, width 0.4s ease-in-out; /* Add width transition */
+  opacity: .75;
+  width: 100px; /* Initial width */
+  white-space: nowrap; /* Prevent text wrapping */
+  overflow: hidden; /* Hide overflow text */
+}
+#attribution:hover, #attribution:active {
+  opacity: 1;
+  width: 200px; /* Expanded width on hover */
+}
+#attribution.open {
+  background: rgba(0,0,0,1);
+  opacity: 1;
+  width: 200px; /* Expanded width when clicked */
 }
 #attribution::before {
   content: '✨ ';
@@ -74,9 +86,21 @@ body {
   cursor: pointer;
 }
 #site-credits {
-  display: none;
+  padding: 0 0 0 20px;
+  margin: 0;
+  height: 0; /* Initially collapsed */
+  overflow: hidden; /* Ensure no content shows outside the div when collapsed */
+  opacity: 0; /* Fully transparent initially */
+  transform: translateY(-20px); /* Move up when collapsed */
+  transition: height 0.5s ease, opacity 0.5s ease, transform 0.5s ease;
+}
+/* Visible state */
+#site-credits.show {
   margin-top: 10px;
-  padding-left: 20px;
+  padding: 0 0 10px 20px;
+  height: auto; /* Set dynamically with JavaScript */
+  opacity: 1; /* Fully visible */
+  transform: translateY(0); /* Slide back into place */
 }
 #site-credits li {
   margin-bottom: 5px;
@@ -85,7 +109,7 @@ body {
   box-sizing: border-box;
   position: relative;
   display: inline-block;
-  transform: scale(var(--ggs, .75));
+  transform: scale(var(--ggs, .65));
   width: 22px;
   height: 22px;
   border: 2px solid;
@@ -107,10 +131,23 @@ body {
 }
 #logo {
   font-family: 'OldEnglishFive', sans-serif;
-  font-size: 28px;
-  padding: 0 20px 5px 0;
+  font-size: 1.5rem;
+  padding: 0 15px 0 0;
+  transition: all 0.4s ease-in-out;
+  opacity: .75;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.6),  /* Close glow */
+               0 0 20px rgba(255, 255, 255, 0.4),  /* Mid glow */
+               0 0 30px rgba(255, 255, 255, 0.2);  /* Far glow */
 }
 #logo a {
   color: white;
   text-decoration: none;
+}
+#logo:hover, #logo:active {
+  opacity: 1;
+  text-shadow: 0 0 15px rgba(0, 0, 0, 0.9),
+               0 0 30px rgba(255, 255, 255, 0.7),
+               0 0 40px rgba(255, 255, 255, 0.5);
+  filter: brightness(2); /* Increase brightness */
+  transform: scale(1.1); /* Optional: Slightly scale the text on hover */
 }

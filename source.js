@@ -43,24 +43,64 @@ window.addEventListener('DOMContentLoaded', async () => {
     const attribution = document.getElementById('attribution');
     const credits = document.getElementById('site-credits');
 
-    // Toggle the visibility of the credits on click
-    attribution.addEventListener('click', () => {
-        credits.style.display = credits.style.display === 'none' || credits.style.display === '' ? 'block' : 'none';
-    });
+    // Function to smoothly transition height
+    function toggleSiteCredits() {
+      if (credits.classList.contains('show')) {
+        // Collapse
+        const creditsHeight = credits.scrollHeight + 'px'; // Get the current full height
+        credits.style.height = creditsHeight; // Set the height before collapsing to avoid sudden jump
+        setTimeout(() => {
+          credits.style.height = '0'; // Set height to 0 to collapse
+        }, 1);
+      } else {
+        // Expand
+        credits.style.height = 'auto'; // Temporarily set to auto to get the correct height
+        const creditsHeight = credits.scrollHeight + 'px'; // Get the current full height
+        credits.style.height = '0'; // Set it back to 0 before the expansion
+        setTimeout(() => {
+          credits.style.height = creditsHeight; // Smoothly expand to the full height
+        }, 1);
+      }
+
+      credits.classList.toggle('show');
+      
+      // Toggle the .open class for opacity of #attribution
+      if (credits.classList.contains('show')) {
+        attribution.classList.add('open');
+      } else {
+        attribution.classList.remove('open');
+      }
+    }
+
+    // Event listener for click
+    attribution.addEventListener('click', toggleSiteCredits);
 });
 
 // Function to create the thumbnail menu
 function createThumbnailMenu(config) {
     const menuContainer = document.getElementById('experience-menu'); 
 
-    config.experiences.forEach(exp => {
+    config.experiences.forEach((exp, index) => {
         const thumbnail = document.createElement('img');
         thumbnail.src = `${config.basePath}${exp.folder}/${config.thumbsFile}`; 
         thumbnail.alt = exp.name;
         thumbnail.className = 'thumb'; 
 
-        thumbnail.addEventListener('click', () => {
-            loadARExperience(exp); 
+        // Automatically add the .selected class to the first (default) experience
+        if (index === 0) {
+            thumbnail.classList.add('selected');  // Add .selected to the default experience thumbnail
+        }
+
+        // Add a click event listener to each thumbnail
+        thumbnail.addEventListener('click', function() {
+            // Remove the .selected class from any currently selected thumbnail
+            const currentSelected = document.querySelector('.thumb.selected');
+            if (currentSelected) {
+                currentSelected.classList.remove('selected');
+            }
+
+            // Add the .selected class to the clicked thumbnail
+            this.classList.add('selected');
         });
 
         menuContainer.appendChild(thumbnail); 
@@ -390,4 +430,4 @@ function createImagePlane(imageSrc, imageWidth, imageHeight, opacity) {
     return new THREE.Mesh(geometry, material);  // Return image plane mesh
 }
 
-console.log('version check: 0.0.4b');
+console.log('version check: 0.0.4c');
