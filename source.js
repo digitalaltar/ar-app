@@ -17,7 +17,9 @@ let glowPass, composer;
 // Initialize GLTFLoader and DRACOLoader
 const loader = new GLTFLoader();
 const dracoLoader = new DRACOLoader();
-dracoLoader.setDecoderPath('');  // No need for an external path, bundling Draco in app.js
+
+// Set DRACOLoader to use the JavaScript decoder (bundled inside the app)
+dracoLoader.setDecoderConfig({ type: 'js' });  // This prevents the loader from using WASM and external files
 loader.setDRACOLoader(dracoLoader);
 
 // Wait for the DOM to be fully loaded
@@ -303,4 +305,4 @@ function createVideoPlane(videoSrc, videoWidth, videoHeight, opacity) {
     return { plane: new THREE.Mesh(geometry, material), video };
 }
 
-console.log('version check: 0.0.3f');
+console.log('version check: 0.0.3h');
