@@ -101,7 +101,7 @@ async function disposeARSession() {
     }
 }
 
-// Function to load AR experience
+// Function to load AR experience with animation support
 async function loadARExperience(experience) {
     if (lastExperience === experience) {
         console.log("This experience is already loaded.");
@@ -145,14 +145,20 @@ async function loadARExperience(experience) {
         composer.addPass(new RenderPass(scene, camera));
         composer.addPass(glowPass);
 
-        // Set up target detection and media handling (GLB and video) for each image
+        // Set up target detection and media handling (GLB, FBX, and video) for each image
         setupTargetDetection(experience.images, experience.folder);
 
         // Animation loop for rendering and shader updates
         const clock = new THREE.Clock();
         const animate = () => {
-            const elapsedTime = clock.getElapsedTime();
-            composer.render(); // Render using the composer
+            const deltaTime = clock.getDelta();  // Get time elapsed since last frame
+
+            // Update all animation mixers
+            mixers.forEach((mixer) => {
+                mixer.update(deltaTime);  // Update mixer for the current frame
+            });
+
+            composer.render(); // Render using the composer (with post-processing)
             requestAnimationFrame(animate); // Loop the animation
         };
         animate(); // Start animation
@@ -162,7 +168,10 @@ async function loadARExperience(experience) {
     }
 }
 
-// Function to load a GLB model for each image and apply transformations
+// Global variable to store animation mixers
+const mixers = [];
+
+// Functon to load GLB Models
 function loadGLBModel(url, anchor, transform) {
     loader.load(
         url,
@@ -184,9 +193,37 @@ function loadGLBModel(url, anchor, transform) {
                 if (transform.scale) {
                     model.scale.set(transform.scale.x, transform.scale.y, transform.scale.z);
                 }
+
+                // Apply opacity to model's material if defined
+                if (transform.opacity !== undefined) {
+                    model.traverse((child) => {
+                        if (child.isMesh) {
+                            child.material.transparent = true;
+                            child.material.opacity = transform.opacity;  // Apply opacity from transform
+                        }
+                    });
+                }
+
+                // Apply glow intensity for GLB models
+                if (transform.glowIntensity !== undefined) {
+                    applyGlowEffect(transform.glowIntensity);  // Apply glow intensity for the GLB model
+                }
             }
 
-            anchor.group.add(model);  // Add the transformed model to the anchor group
+            // Add model to the anchor group
+            anchor.group.add(model);
+
+            // Check if the GLB contains animations
+            if (gltf.animations && gltf.animations.length > 0) {
+                const mixer = new THREE.AnimationMixer(model);  // Create an AnimationMixer for the model
+                mixers.push(mixer);  // Store the mixer in the global array to update in the animation loop
+
+                // Loop through all animations and play them
+                gltf.animations.forEach((clip) => {
+                    const action = mixer.clipAction(clip);
+                    action.play();  // Start the animation
+                });
+            }
         },
         undefined,  // onProgress
         (error) => {
@@ -226,9 +263,9 @@ const GlowShader = {
 // Function to set up target detection and media handling
 function setupTargetDetection(mediaData, experienceFolder) {
     mediaData.forEach((entry) => {
-        const { targetIndex, properties } = entry;
-        if (properties === undefined) {
-            console.error(`Properties are missing for image with target index ${targetIndex}`);
+        const { targetIndex, transform, properties } = entry;
+        if (!transform && !properties) {
+            console.error(`Transform or properties are missing for image with target index ${targetIndex}`);
             return;
         }
 
@@ -238,33 +275,42 @@ function setupTargetDetection(mediaData, experienceFolder) {
         // Load the GLB model only if defined, and pass the transform object
         if (entry.glbModel) {
             const glbModelPath = `${experienceConfig.basePath}${experienceFolder}/${entry.glbModel}`;
-            loadGLBModel(glbModelPath, anchor, entry.transform);  // Pass the transform from JSON
+            loadGLBModel(glbModelPath, anchor, transform);  // Pass the transform from JSON
         }
 
-        const videoSrc = `${experienceConfig.basePath}${experienceFolder}/${entry.video}`;
-        const { width, height, opacity } = properties;
+        // Handle video properties separately
+        if (entry.video) {
+            const videoSrc = `${experienceConfig.basePath}${experienceFolder}/${entry.video}`;
+            const { width, height, opacity, glowIntensity } = properties || {};
 
-        if (width === undefined || height === undefined || opacity === undefined) {
-            console.error(`Missing properties for media entry with target index ${targetIndex}`);
-            return;
+            if (width === undefined || height === undefined || opacity === undefined || glowIntensity === undefined) {
+                console.error(`Missing properties for media entry with target index ${targetIndex}`);
+                return;
+            }
+
+            const { plane, video } = createVideoPlane(videoSrc, width, height, opacity);
+            anchor.group.add(plane);  // Add the video plane to the anchor group
+
+            anchor.onTargetFound = () => {
+                video.play();  // Start video playback when the target is detected
+                applyEffects(properties);  // Apply glow shader effects for the video
+            };
+
+            anchor.onTargetLost = () => {
+                video.pause();  // Pause video when the target is lost
+                resetEffects();  // Reset shader effects for the video
+            };
         }
-
-        const { plane, video } = createVideoPlane(videoSrc, width, height, opacity);
-        anchor.group.add(plane);  // Add the video plane to the anchor group
-
-        anchor.onTargetFound = () => {
-            video.play();  // Start video playback when the target is detected
-            applyEffects(properties);  // Apply glow shader effects
-        };
-
-        anchor.onTargetLost = () => {
-            video.pause();  // Pause video when the target is lost
-            resetEffects();  // Reset shader effects
-        };
     });
 }
 
-// Function to apply effects based on entry properties
+function applyGlowEffect(glowIntensity) {
+    if (glowPass && glowPass.uniforms) {
+        glowPass.uniforms['glowIntensity'].value = glowIntensity;
+    }
+}
+
+// Function to apply glow and opacity for videos based on properties
 function applyEffects(properties) {
     const glowIntensity = properties.glowIntensity || 0;
     glowPass.uniforms['glowIntensity'].value = glowIntensity;
@@ -304,4 +350,4 @@ function createVideoPlane(videoSrc, videoWidth, videoHeight, opacity) {
     return { plane: new THREE.Mesh(geometry, material), video };
 }
 
-console.log('version check: 0.0.3j');
+console.log('version check: 0.0.3k');
