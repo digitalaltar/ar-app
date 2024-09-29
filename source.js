@@ -21,6 +21,14 @@ dracoLoader.setDecoderPath('./wasm/'); // Set the path to where your .wasm file 
 
 loader.setDRACOLoader(dracoLoader);
 
+// Smoothing factor for controlling how much smoothing to apply (adjust between 0 and 1)
+const smoothingFactor = 0.1;
+
+// Function to apply smoothing to an object's position
+function smoothPosition(object, targetPosition) {
+    object.position.lerp(targetPosition, smoothingFactor);
+}
+
 // Wait for the DOM to be fully loaded
 window.addEventListener('DOMContentLoaded', async () => {
     // Ensure the DOM is ready, including the #mindar-container
@@ -181,7 +189,7 @@ function loadGLBModel(url, anchor, transform) {
             // Apply position, rotation, and scale from the transform object
             if (transform) {
                 if (transform.position) {
-                    model.position.set(transform.position.x, transform.position.y, transform.position.z);
+                    smoothPosition(model, new THREE.Vector3(transform.position.x, transform.position.y, transform.position.z));
                 }
                 if (transform.rotation) {
                     model.rotation.set(
@@ -279,7 +287,7 @@ function setupTargetDetection(mediaData, experienceFolder) {
             ({ plane: videoPlane, video } = createVideoPlane(videoSrc, width, height, opacity));
 
             if (position) {
-                videoPlane.position.set(position.x, position.y, position.z);
+                smoothPosition(videoPlane, new THREE.Vector3(position.x, position.y, position.z));
             }
             anchor.group.add(videoPlane);  // Add the video plane to the anchor group
         }
@@ -293,7 +301,7 @@ function setupTargetDetection(mediaData, experienceFolder) {
 
             imagePlane = createImagePlane(imageSrc, width, height, opacity);  // Assign imagePlane
             if (position) {
-                imagePlane.position.set(position.x, position.y, position.z);  // Set image position from imageProperties
+                smoothPosition(imagePlane, new THREE.Vector3(position.x, position.y, position.z));
             }
             anchor.group.add(imagePlane);  // Add the image plane to the anchor group
         }
@@ -382,4 +390,4 @@ function createImagePlane(imageSrc, imageWidth, imageHeight, opacity) {
     return new THREE.Mesh(geometry, material);  // Return image plane mesh
 }
 
-console.log('version check: 0.0.3n');
+console.log('version check: 0.0.4a');
